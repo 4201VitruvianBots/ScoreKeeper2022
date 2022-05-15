@@ -14,7 +14,7 @@ String myPurpose="SPI Master collects scores from all slave score keepers";
 #define BLUE 2
 #define mainScoreFlashTime 100  // how quickly can main score LED respond? 
 #define mainScoreRestTime  300
-#define WILD_LEAP 20
+#define WILD_LEAP 100
 
 /* Vitruvian Bots Team 4201 Score Keeper
    Example of SPI transfer between (1) Master controller and (4) Slave
@@ -30,8 +30,8 @@ String myPurpose="SPI Master collects scores from all slave score keepers";
  */
 #include <SPI.h>
 
-int numSS = 2;  //Sets number of Nanos wired up, handles up to 4
-int SSpin[] = {10,9};  // orig {10, 8, 7, 6};
+int numSS = 3;  //Sets number of Nanos wired up, handles up to 4
+int SSpin[] = {10,9,8};
 const byte initSlave0 = 0b11111111;
 const byte initSlave1 = 0b01111111;
 const byte getBlue = 0b11110000;
@@ -189,6 +189,7 @@ void showSumScores(int sumRed, int sumBlue, int prevRed, int prevBlue) {
   }
   matrix1.println(sumRed);    matrix1.writeDisplay();
   matrix2.println(sumBlue);   matrix2.writeDisplay();
+  //matrix2.println(9000 + ignoreCount);   matrix2.writeDisplay();
 }
 
 int updateMainScore(byte color, int curr, int prev) {
@@ -253,13 +254,5 @@ void loop() {
   showSumScores(sumRed, sumBlue, prevRed, prevBlue);
   sumRed = updateMainScore(RED, sumRed, prevRed); 
   sumBlue = updateMainScore(BLUE, sumBlue, prevBlue); 
-  delay(500);  //Simulates time between scoring events
-}
-
-void TESTloop() {
-  digitalWrite(MAIN_RED_PIN, HIGH);
-  delay(100);
-  digitalWrite(MAIN_RED_PIN, LOW);
-  delay(300);
-  Serial.println(loopCount++);
+  delay(1000);
 }
